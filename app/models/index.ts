@@ -9,3 +9,4 @@ export * from "./User/User"
 export * from "./ExampleStore/ExampleStore"
 // @demo remove-block-end
 export * from "./AppStore/AppStore"
+export * from "./Book/Book"
