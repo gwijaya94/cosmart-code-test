@@ -1,0 +1,43 @@
+---
+patch:
+  path: "app/components/index.ts"
+  append: "export * from \"./<%= props.subdirectory %><%= props.pascalCaseName %>\"\n"
+  skip: <%= props.skipIndexFile %>
+---
+/* eslint-disable react-native/sort-styles */
+import { observer } from "mobx-react-lite"
+import * as React from "react"
+import { StyleProp, StyleSheet, View, ViewStyle } from "react-native"
+import { Text } from "~/components/Text"
+import { getColor } from "~/theme"
+
+export interface <%= props.pascalCaseName %>Props {
+  /**
+   * An optional style override useful for padding & margin.
+   */
+  style?: StyleProp<ViewStyle>
+}
+
+/**
+ * Describe your component here
+ */
+export const <%= props.pascalCaseName %> = observer(function <%= props.pascalCaseName %>(props: <%= props.pascalCaseName %>Props) {
+  const { style, ...rest } = props
+  const wrapperStyle = StyleSheet.flatten([styles.container, style])
+
+  return (
+    <View {...rest} style={wrapperStyle}>
+      <Text style={styles.text} text="<%= props.pascalCaseName %> Component" />
+    </View>
+  )
+})
+
+const styles = StyleSheet.create({
+  container: {
+    justifyContent: "center",
+  },
+
+  text: {
+    ...getColor("black").textColor,
+  },
+})

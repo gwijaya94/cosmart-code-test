@@ -1,0 +1,47 @@
+---
+destinationDir: app/screens/<%= props.pascalCaseName %>
+patches:
+  - path: "app/screens/index.ts"
+    append: "export * from \"./<%= props.pascalCaseName %>/<%= props.pascalCaseName %>Screen\"\n"
+    skip: <%= props.skipIndexFile %>
+  - path: "app/navigators/AppStackNavigator.tsx"
+    replace: "// 🔥 Your stack screens go here\n"
+    insert: "<%= props.pascalCaseName %>: undefined\n  // 🔥 Your stack screens go here\n"
+    skip: <%= props.skipIndexFile %>
+  - path: "app/navigators/AppStackNavigator.tsx"
+    replace: "    // 🔥 Your stack data go here\n"
+    insert: "    { name: \"<%= props.pascalCaseName %>\", component: Screens.<%= props.pascalCaseName %>Screen },\n    // 🔥 Your stack data go here\n"
+    skip: <%= props.skipIndexFile %>
+---
+/* eslint-disable react-native/sort-styles */
+import { observer } from "mobx-react-lite"
+import React from "react"
+import { StyleSheet } from "react-native"
+import { Screen, Text } from "~/components"
+// import { useStores } from "~/models"
+import { ScreenStackProps } from "~/navigators"
+import { mStyles, typography } from "~/theme"
+import { getRoute } from "~/utils/navigatorHelper"
+
+export const <%= props.pascalCaseName %>Screen: ScreenStackProps<"<%= props.pascalCaseName %>"> = observer(function <%= props.pascalCaseName %>Screen(props) {
+  const { navigation, route } = props
+  // const { app, userStore } = useStores()
+
+  const routeOpt = getRoute(route)
+
+  return (
+    <Screen style={styles.root} routeOpt={routeOpt}>
+      <Text style={styles.text}>Hi, You're on <%= props.pascalCaseName %> Screen</Text>
+    </Screen>
+  )
+})
+
+const styles = StyleSheet.create({
+  root: {
+    ...mStyles.paddingPage,
+  },
+
+  text: {
+    ...typography.textCenter,
+  },
+})
