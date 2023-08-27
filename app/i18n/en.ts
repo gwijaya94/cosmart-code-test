@@ -54,6 +54,9 @@ const en = {
     cancel: "Cancel",
     delete: "Delete",
   },
+  orderScreen: {
+    emptyOrder: "No Order Found",
+  },
 }
 
 export default en
