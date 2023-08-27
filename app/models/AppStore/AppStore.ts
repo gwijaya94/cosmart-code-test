@@ -10,7 +10,7 @@ export const AppStoreModel = types
   .props({})
   .actions(withSetPropAction)
   .views((self) => ({})) // eslint-disable-line @typescript-eslint/no-unused-vars
-  .actions((self) => ({
+  .actions(() => ({
     handleApiError(response: GeneralApiProblem) {
       if (response.kind === "unauthorized") {
         console.log("Unauth")

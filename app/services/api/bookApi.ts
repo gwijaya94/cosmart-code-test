@@ -8,7 +8,7 @@ export class BookApi extends Api {
   async searchBook(props: { bookQuery: string; offset: number }): Promise<GetSearchBookResult> {
     const { apisauce, config } = this
 
-    const response: ApiResponse<any> = await apisauce.get(config.listUsers, {
+    const response: ApiResponse<any> = await apisauce.get(config.searchBook, {
       q: props.bookQuery,
       offset: props.offset,
       limit: 5,

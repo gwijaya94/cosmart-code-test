@@ -1,3 +1,4 @@
+import { BookSnapshotIn } from "~/models"
 import { GeneralApiProblem } from "./apiProblem"
 
 interface SearchBookType {
