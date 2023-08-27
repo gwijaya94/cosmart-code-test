@@ -52,16 +52,25 @@ export const SummaryStoreModel = types
         this.handleState({ bookList: tempArr })
       }
     },
-    handleSubmitBooking() {
-      const { appStore } = getRootStore(self)
+    async handleSubmitBooking() {
+      const { appStore, orderStore } = getRootStore(self)
       const selectedDate = getDayJs(self.borrowDate).format("DD MMMM YYYY - HH:mm")
 
       self.setProp("isLoading", true)
+
+      orderStore.handleState({
+        orderList: [
+          ...orderStore.orderList,
+          { books: self.getSummaryBorrowedBook, pickupDate: self.borrowDate },
+        ],
+      })
+
       appStore.handleState({
         isSuccess: true,
         message: `Success Submit!\nPlease pickup on ${selectedDate}`,
       })
       self.setProp("isLoading", false)
+      this.handleState({ bookList: [] })
     },
   }))
 

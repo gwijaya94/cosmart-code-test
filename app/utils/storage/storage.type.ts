@@ -4,6 +4,7 @@ const storageKey = {
   something: "something",
   root: "root",
   rootState: "rootState",
+  order: "orderBook",
 
   TOKEN: "token",
   USER: "user",

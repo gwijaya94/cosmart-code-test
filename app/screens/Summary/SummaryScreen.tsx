@@ -1,6 +1,6 @@
 /* eslint-disable react-native/sort-styles */
 import { observer } from "mobx-react-lite"
-import React from "react"
+import React, { useEffect } from "react"
 import { FlatList, StyleSheet, View } from "react-native"
 import { Button, DateTimePicker, Image, ImageStyle, Screen, Text } from "~/components"
 import { BookSnapshotIn, useStores } from "~/models"
@@ -23,6 +23,10 @@ export const SummaryScreen: ScreenStackProps<"Summary"> = observer(function Summ
   const isLoadSummary = summaryStore.isLoading
   const isEdit = summaryStore.isEditing
 
+  useEffect(() => {
+    return () => summaryStore.setProp("isLoading", false)
+  }, [])
+
   const onSelectDate = (date: string) => {
     summaryStore.setProp("borrowDate", date)
   }
@@ -35,8 +39,9 @@ export const SummaryScreen: ScreenStackProps<"Summary"> = observer(function Summ
     summaryStore.handleOnAddBook(item)
   }
 
-  const onSubmitBooking = () => {
-    summaryStore.handleSubmitBooking()
+  const onSubmitBooking = async () => {
+    await summaryStore.handleSubmitBooking()
+    navigation.replace("Order")
   }
 
   return (

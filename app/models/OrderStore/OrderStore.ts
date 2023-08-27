@@ -1,15 +1,37 @@
-import { Instance, SnapshotIn, SnapshotOut, types } from "mobx-state-tree"
+import { toJS } from "mobx"
+import { Instance, SnapshotIn, SnapshotOut, applySnapshot, types } from "mobx-state-tree"
+import { TouchableHighlightBase } from "react-native"
+import { load } from "~/utils/storage"
+import { BookStoreModel } from "../BookStore/BookStore"
 import { withSetPropAction } from "../helpers/withSetPropAction"
 
-/**
- * Model description here for TypeScript hints.
- */
+const OrderModel = types.model({
+  books: types.array(BookStoreModel),
+  pickupDate: types.maybeNull(types.string),
+})
+
 export const OrderStoreModel = types
   .model("OrderStore")
-  .props({})
+  .props({
+    isLoading: types.optional(types.boolean, false),
+
+    orderList: types.array(OrderModel),
+  })
   .actions(withSetPropAction)
-  .views((self) => ({})) // eslint-disable-line @typescript-eslint/no-unused-vars
-  .actions((self) => ({})) // eslint-disable-line @typescript-eslint/no-unused-vars
+  .views((self) => ({
+    get getOrderList() {
+      return toJS(self.orderList)
+    },
+  }))
+  .actions((self) => ({
+    handleState(obj: OrderStoreSnapshotIn) {
+      applySnapshot(self, { ...self, ...obj })
+    },
+    async handleGetOrderData() {
+      this.handleState({ isLoading: true })
+      this.handleState({ isLoading: false })
+    },
+  }))
 
 export interface OrderStore extends Instance<typeof OrderStoreModel> {}
 export interface OrderStoreSnapshotOut extends SnapshotOut<typeof OrderStoreModel> {}
