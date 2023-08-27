@@ -8,8 +8,9 @@ import { withSetPropAction } from "../helpers/withSetPropAction"
 export const AppStoreModel = types
   .model("AppStore")
   .props({
+    isSuccess: types.optional(types.boolean, false),
     isError: types.optional(types.boolean, false),
-    errorMessage: types.optional(types.string, ""),
+    message: types.optional(types.string, ""),
   })
   .actions(withSetPropAction)
   .views((self) => ({})) // eslint-disable-line @typescript-eslint/no-unused-vars

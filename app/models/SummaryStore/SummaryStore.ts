@@ -36,18 +36,17 @@ export const SummaryStoreModel = types
       const { appStore } = getRootStore(self)
       const borrowed = self.getBorrowedBookList
 
-      if (borrowed.length >= 5) {
-        appStore.handleState({ isError: true, errorMessage: "You can only borrow up to 5 books" })
-        return
-      }
-
       const borrowedIndex = borrowed.findIndex((title) => title === item.key)
       const tempArr = self.bookList.slice()
+
       if (borrowedIndex < 0) {
+        if (borrowed.length >= 5) {
+          appStore.handleState({ isError: true, message: "You can only borrow up to 5 books" })
+          return
+        }
         this.handleState({ bookList: [...tempArr, item] })
       } else {
         tempArr.splice(borrowedIndex, 1)
-        console.tron.log(tempArr)
         this.handleState({ bookList: tempArr })
       }
     },

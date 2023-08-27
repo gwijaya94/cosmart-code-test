@@ -8,7 +8,7 @@ import { DarkTheme, DefaultTheme, NavigationContainer } from "@react-navigation/
 import { observer } from "mobx-react-lite"
 import React from "react"
 import { useColorScheme } from "react-native"
-import { ModalError } from "~/components"
+import { ModalInfo } from "~/components"
 import { Config } from "~/config"
 import { AppStackNavigator } from "./AppStackNavigator"
 import { navigationRef, useBackButtonHandler } from "./navigationUtilities"
@@ -34,7 +34,7 @@ export const AppNavigator = observer(function AppNavigator(props: NavigationProp
       {...props}
     >
       <AppStackNavigator />
-      <ModalError />
+      <ModalInfo />
     </NavigationContainer>
   )
 })
