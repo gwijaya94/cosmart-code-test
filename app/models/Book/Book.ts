@@ -13,6 +13,8 @@ export const BookModel = types.model("Book").props({
   cover_i: types.maybeNull(types.number),
   author_key: types.array(types.string),
   author_name: types.array(types.string),
+
+  cover_image: types.maybeNull(types.string),
 })
 
 export interface Book extends Instance<typeof BookModel> {}

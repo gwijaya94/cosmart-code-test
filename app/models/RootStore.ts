@@ -1,5 +1,6 @@
 import { Instance, SnapshotIn, types } from "mobx-state-tree"
 import { createAppStoreDefaultModel } from "./AppStore/AppStore"
+import { createBookStoreDefaultModel } from "./BookStore/BookStore"
 // @demo remove-block-start
 import { createExampleStoreDefaultModel } from "./ExampleStore/ExampleStore"
 import { createUserStoreDefaultModel } from "./UserStore/UserStore"
@@ -15,6 +16,7 @@ export const RootStoreModel = types.model("RootStore").props({
   exampleStore: createExampleStoreDefaultModel(),
   // @demo remove-block-end
   appStore: createAppStoreDefaultModel(),
+  bookStore: createBookStoreDefaultModel(),
   // 🔥 Your models go here
 })
 
