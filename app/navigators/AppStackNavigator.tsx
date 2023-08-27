@@ -19,10 +19,6 @@ export type AppStackNavigatorParamList = {
 const Stack = createNativeStackNavigator<AppStackParamList>()
 export const AppStackNavigator = () => {
   const listAppScreen: ListScreenType[] = [
-    // @demo remove-block-start
-    { name: "example", component: Screens.ExampleScreen },
-    { name: "exampleApi", component: Screens.ExampleApiScreen },
-    // @demo remove-block-end
     // 🔥 Your stack data go here
   ]
 

@@ -2,7 +2,6 @@ import { NavigationState, createNavigationContainerRef } from "@react-navigation
 import { useEffect, useRef, useState } from "react"
 import { BackHandler, Platform } from "react-native"
 import { NAVIGATION_PERSISTENCE_KEY } from "~/app"
-import { logging } from "~/utils/function"
 import { Config } from "../config"
 import { PersistNavigationConfig } from "../config/config.base"
 import * as storage from "../utils/storage"
