@@ -40,6 +40,10 @@ const en = {
     borrowButton: "Borrow",
     cancelButton: "Cancel",
   },
+  summaryScreen: {
+    borrowedBooks: "Borrowed book(s):",
+    submit: "Submit",
+  },
 }
 
 export default en

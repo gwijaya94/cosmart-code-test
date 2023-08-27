@@ -10,13 +10,22 @@ import { withSetPropAction } from "../helpers/withSetPropAction"
 export const SummaryStoreModel = types
   .model("SummaryStore")
   .props({
+    isLoading: types.optional(types.boolean, false),
+
     bookList: types.array(BookModel),
     borrowDate: types.optional(types.string, ""),
   })
   .actions(withSetPropAction)
   .views((self) => ({
+    get getSummaryBorrowedBook() {
+      return toJS(self.bookList)
+    },
     get getBorrowedBookList() {
-      return toJS(self.bookList).map((item) => item.key)
+      return this.getSummaryBorrowedBook.map((item) => item.key)
+    },
+
+    get canSubmitBooking() {
+      return this.getBorrowedBookList.length > 0 && self.borrowDate !== ""
     },
   }))
   .actions((self) => ({
@@ -41,6 +50,10 @@ export const SummaryStoreModel = types
         console.tron.log(tempArr)
         this.handleState({ bookList: tempArr })
       }
+    },
+    handleSubmitBooking() {
+      self.setProp("isLoading", true)
+      self.setProp("isLoading", false)
     },
   }))
 
