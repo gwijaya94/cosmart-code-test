@@ -1,6 +1,6 @@
 /* eslint-disable react-native/sort-styles */
 import { observer } from "mobx-react-lite"
-import React, { useEffect } from "react"
+import React, { useEffect, useLayoutEffect } from "react"
 import { ActivityIndicator, FlatList, Pressable, ScrollView, StyleSheet, View } from "react-native"
 import { Button, Icon, Image, ImageStyle, Input, Screen, Text } from "~/components"
 import { BookSnapshotIn, useStores } from "~/models"
@@ -9,9 +9,8 @@ import { ColorItem, colors, getColor, mStyles, spacing, typography } from "~/the
 import { getRoute } from "~/utils/navigatorHelper"
 
 export const HomeScreen: ScreenStackProps<"Home"> = observer(function HomeScreen(props) {
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const { navigation, route } = props
-  const { bookStore } = useStores()
+  const { bookStore, summaryStore } = useStores()
 
   const routeOpt = getRoute(route)
   const availableSubjects = bookStore.getAvailableSubjects
@@ -19,10 +18,33 @@ export const HomeScreen: ScreenStackProps<"Home"> = observer(function HomeScreen
   const bookData = bookStore.getBookList
   const bookQuery = bookStore.bookQuery
   const isLoadData = bookStore.isLoading
+  const bookBorrowedList = summaryStore.getBorrowedBookList
 
   useEffect(() => {
     onRefresh()
   }, [])
+
+  useLayoutEffect(() => {
+    navigation.setOptions({
+      headerRight: HeaderRight,
+    })
+  }, [bookBorrowedList])
+
+  const HeaderRight = () => {
+    return (
+      <Pressable style={{ marginRight: spacing.md }} onPress={() => navigation.navigate("Summary")}>
+        <Icon name="cart" iconColor="white" />
+        <View style={styles.borrowedCount}>
+          <Text
+            text={bookBorrowedList.length.toString()}
+            preset="notes"
+            variant="primaryBold"
+            style={getColor("white").textColor}
+          />
+        </View>
+      </Pressable>
+    )
+  }
 
   const onRefresh = async () => {
     await bookStore.searchBook({ isRefresh: true })
@@ -42,7 +64,7 @@ export const HomeScreen: ScreenStackProps<"Home"> = observer(function HomeScreen
   }
 
   const onBorrowBook = (item: BookSnapshotIn) => () => {
-    console.tron.log(item)
+    summaryStore.handleOnAddBook(item)
   }
 
   return (
@@ -104,6 +126,7 @@ export const HomeScreen: ScreenStackProps<"Home"> = observer(function HomeScreen
           const bookAuthors = item.author_name.slice(0, 5).join(", ")
           const bookRating = item.ratings_average?.toFixed(2) ?? ""
           const bookEdition = item.edition_count ?? 0
+          const isBorrowed = bookBorrowedList.includes(item.key)
 
           return (
             <View style={styles.bookWrapper}>
@@ -130,8 +153,9 @@ export const HomeScreen: ScreenStackProps<"Home"> = observer(function HomeScreen
                 )}
               </View>
               <Button
-                tx="homeScreen.borrowButton"
+                tx={isBorrowed ? "homeScreen.cancelButton" : "homeScreen.borrowButton"}
                 buttonSize="medium"
+                buttonType={isBorrowed ? "secondary" : "primary"}
                 containerStyle={styles.borowButton}
                 onPress={onBorrowBook(item)}
               />
@@ -148,6 +172,14 @@ const styles = StyleSheet.create({
     ...mStyles.paddingPage,
     paddingBottom: 0,
   },
+  borrowedCount: {
+    ...mStyles.centerScreen,
+    right: -spacing.xs,
+    top: -spacing.sm,
+    borderRadius: 50,
+    position: "absolute",
+  },
+
   availSubsWrapper: {
     ...mStyles.centerInline,
     paddingBottom: spacing.md,

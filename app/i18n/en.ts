@@ -32,6 +32,7 @@ const en = {
     editionNumber: "Edition : {{edition}}",
     noBook: "No Book Result Found",
     borrowButton: "Borrow",
+    cancelButton: "Cancel",
   },
 }
 
