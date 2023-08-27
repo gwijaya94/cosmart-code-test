@@ -13,12 +13,14 @@ export type AppStackNavigatorParamList = {
   demo: undefined
   example: undefined
   exampleApi: undefined
+  Home: undefined
   // 🔥 Your stack screens go here
 }
 
 const Stack = createNativeStackNavigator<AppStackParamList>()
 export const AppStackNavigator = () => {
   const listAppScreen: ListScreenType[] = [
+    { name: "Home", component: Screens.HomeScreen },
     // 🔥 Your stack data go here
   ]
 
