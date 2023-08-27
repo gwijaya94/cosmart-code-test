@@ -18,6 +18,7 @@ const palette = {
   smoke: "#F0EDED",
   grey: "#ADA6AE",
   lightGrey: "#D5D1D9",
+  gold: "#FFD700",
 
   // app  colors
   astraBlue: "#005BAA",
@@ -73,4 +74,5 @@ export const colors = {
   line: palette.grey,
   white: palette.white,
   black: palette.black,
+  award: palette.gold,
 }

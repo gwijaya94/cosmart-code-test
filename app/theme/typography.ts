@@ -120,6 +120,12 @@ const textAlignment = {
   textJustify: { textAlign: "justify" } as TextAlignmentType,
 }
 
+const textTransforms = {
+  capitalize: { textTransform: "capitalize" } as TextStyle,
+  lowercase: { textTransform: "lowercase" } as TextStyle,
+  uppercase: { textTransform: "uppercase" } as TextStyle,
+}
+
 /**
  * Contains text presets, aligment, and font variant (weight)
  */
@@ -127,6 +133,7 @@ export const typography = {
   ...textAlignment,
   ...fontPresets,
   ...fontVariants,
+  ...textTransforms,
 }
 
 export type TypographyPreset = keyof typeof fontPresets

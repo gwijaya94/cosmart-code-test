@@ -23,7 +23,7 @@ export const mStyles = {
   flex: {
     flex: 1,
   } as ViewStyle,
-
+  inline: { flexDirection: "row" } as ViewStyle,
   centerInline: {
     flexDirection: "row",
     alignItems: "center",
@@ -32,5 +32,10 @@ export const mStyles = {
   paddingPage: {
     paddingHorizontal: 16,
     paddingVertical: 20,
+  } as ViewStyle,
+
+  centerScreen: {
+    alignItems: "center",
+    justifyContent: "center",
   } as ViewStyle,
 }
