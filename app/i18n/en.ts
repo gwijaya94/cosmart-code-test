@@ -29,6 +29,12 @@ const en = {
     modalInfo: {
       closeButton: "Close",
     },
+    orderItem: {
+      orderNo: "Order No: {{orderNo}}",
+      pickupDate: "Pickup Date: {{date}}",
+      booksBorrowed: "Books Borrowed: {{borrowedLength}}",
+      checkDetail: "Check Detail",
+    },
   },
 
   homeScreen: {
