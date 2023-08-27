@@ -12,6 +12,7 @@ export const SummaryStoreModel = types
   .model("SummaryStore")
   .props({
     isLoading: types.optional(types.boolean, false),
+    isEditing: types.optional(types.boolean, false),
 
     bookList: types.array(BookModel),
     borrowDate: types.optional(types.string, ""),

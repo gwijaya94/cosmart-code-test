@@ -3,7 +3,7 @@ import { observer } from "mobx-react-lite"
 import React from "react"
 import { FlatList, StyleSheet, View } from "react-native"
 import { Button, DateTimePicker, Image, ImageStyle, Screen, Text } from "~/components"
-import { useStores } from "~/models"
+import { BookSnapshotIn, useStores } from "~/models"
 import { ScreenStackProps } from "~/navigators"
 import { getColor, mStyles, spacing, typography } from "~/theme"
 import { getDayJs } from "~/utils/formatDate"
@@ -20,9 +20,19 @@ export const SummaryScreen: ScreenStackProps<"Summary"> = observer(function Summ
     : undefined
   const maxDate = getDayJs().add(7, "day").toDate()
   const canSubmit = summaryStore.canSubmitBooking
+  const isLoadSummary = summaryStore.isLoading
+  const isEdit = summaryStore.isEditing
 
   const onSelectDate = (date: string) => {
     summaryStore.setProp("borrowDate", date)
+  }
+
+  const onSwitchEdit = () => {
+    summaryStore.setProp("isEditing", !isEdit)
+  }
+
+  const onDeleteItem = (item: BookSnapshotIn) => () => {
+    summaryStore.handleOnAddBook(item)
   }
 
   const onSubmitBooking = () => {
@@ -36,16 +46,24 @@ export const SummaryScreen: ScreenStackProps<"Summary"> = observer(function Summ
           <>
             <DateTimePicker
               value={borrowedDate}
+              disabled={borrowedBook.length === 0}
               onSelected={onSelectDate}
               maximumDate={maxDate}
               minuteInterval={15}
               labelTx="summaryScreen.pickupDate"
             />
-            <Text
-              tx="summaryScreen.borrowedBooks"
-              variant="primaryBold"
-              style={styles.borrowedBook}
-            />
+            <View style={styles.borrowedTextWrapper}>
+              <Text
+                tx="summaryScreen.borrowedBooks"
+                variant="primaryBold"
+                style={styles.borrowedBook}
+              />
+              <Text
+                tx={!isEdit ? "summaryScreen.edit" : "summaryScreen.cancel"}
+                style={[getColor(isEdit ? "error" : "secondary").textColor, styles.editText]}
+                onPress={onSwitchEdit}
+              />
+            </View>
           </>
         }
         data={borrowedBook}
@@ -76,6 +94,9 @@ export const SummaryScreen: ScreenStackProps<"Summary"> = observer(function Summ
                 />
                 <View style={mStyles.flex} />
               </View>
+              {isEdit && (
+                <Button tx="summaryScreen.delete" onPress={onDeleteItem(item)} buttonSize="small" />
+              )}
             </View>
           )
         }}
@@ -83,6 +104,7 @@ export const SummaryScreen: ScreenStackProps<"Summary"> = observer(function Summ
       <Button
         tx="summaryScreen.submit"
         containerStyle={{ marginHorizontal: spacing.md }}
+        loading={isLoadSummary}
         disabled={!canSubmit}
         onPress={onSubmitBooking}
       />
@@ -99,6 +121,13 @@ const styles = StyleSheet.create({
     marginBottom: spacing.sm,
   },
 
+  borrowedTextWrapper: {
+    ...mStyles.centerInline,
+    justifyContent: "space-between",
+  },
+  editText: {
+    textDecorationLine: "none",
+  },
   bookWrapper: {
     ...mStyles.centerInline,
     ...getColor("line").borderColor,

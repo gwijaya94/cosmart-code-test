@@ -44,6 +44,9 @@ const en = {
     borrowedBooks: "Borrowed book(s):",
     submit: "Submit",
     pickupDate: "Pickup Date",
+    edit: "Edit",
+    cancel: "Cancel",
+    delete: "Delete",
   },
 }
 
