@@ -24,6 +24,14 @@ const en = {
       button: "Let's try this again",
     },
   },
+
+  homeScreen: {
+    searchPlaceholder: "Search {{search}}...",
+    availSubject: "Subjects :",
+    authorName: "Author(s) : {{authors}}",
+    editionNumber: "Edition : {{edition}}",
+    noBook: "No Book Result Found",
+  },
 }
 
 export default en
