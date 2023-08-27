@@ -31,6 +31,7 @@ const en = {
     authorName: "Author(s) : {{authors}}",
     editionNumber: "Edition : {{edition}}",
     noBook: "No Book Result Found",
+    borrowButton: "Borrow",
   },
 }
 

@@ -2,8 +2,8 @@
 import { observer } from "mobx-react-lite"
 import React, { useEffect } from "react"
 import { ActivityIndicator, FlatList, Pressable, ScrollView, StyleSheet, View } from "react-native"
-import { Icon, Image, ImageStyle, Input, Screen, Text } from "~/components"
-import { useStores } from "~/models"
+import { Button, Icon, Image, ImageStyle, Input, Screen, Text } from "~/components"
+import { BookSnapshotIn, useStores } from "~/models"
 import { ScreenStackProps } from "~/navigators"
 import { ColorItem, colors, getColor, mStyles, spacing, typography } from "~/theme"
 import { getRoute } from "~/utils/navigatorHelper"
@@ -39,6 +39,10 @@ export const HomeScreen: ScreenStackProps<"Home"> = observer(function HomeScreen
 
   const onEndReached = async () => {
     await bookStore.searchBook({ isLoadMore: true })
+  }
+
+  const onBorrowBook = (item: BookSnapshotIn) => () => {
+    console.tron.log(item)
   }
 
   return (
@@ -125,6 +129,12 @@ export const HomeScreen: ScreenStackProps<"Home"> = observer(function HomeScreen
                   </View>
                 )}
               </View>
+              <Button
+                tx="homeScreen.borrowButton"
+                buttonSize="medium"
+                containerStyle={styles.borowButton}
+                onPress={onBorrowBook(item)}
+              />
             </View>
           )
         }}
@@ -177,5 +187,9 @@ const styles = StyleSheet.create({
   bookAuthor: {
     ...typography.remark,
     marginBottom: spacing.xxs,
+  },
+  borowButton: {
+    marginBottom: spacing.zero,
+    alignSelf: "flex-end",
   },
 })
