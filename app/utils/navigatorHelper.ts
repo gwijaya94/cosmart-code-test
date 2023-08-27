@@ -1,8 +1,11 @@
 import { NativeStackNavigationOptions } from "@react-navigation/native-stack"
 import { ColorValue, StatusBarStyle } from "react-native"
-import { AppStackList, RouteStackProps } from "~/navigators"
+import { AppStackList, BottomTabList, RouteStackProps, RouteTabProps } from "~/navigators"
 import { colors, typography } from "~/theme"
 import { getCamelCaseText } from "~/utils/function"
+
+type RouteType = RouteStackProps | RouteTabProps
+type ScreenList = AppStackList | BottomTabList
 
 export type GetRouteType = {
   hasHeader: boolean
@@ -14,27 +17,26 @@ export type GetRouteType = {
   name: string
 }
 
-const getRouteName = (route: RouteStackProps) => {
+const getRouteName = (route: RouteType) => {
   const routeName = route.name
-  if (routeName === "demo") {
-    return "Demo"
-  }
-  return `${getCamelCaseText(routeName)} Screen`
+  return `${getCamelCaseText(routeName)}`
 }
 
-const getIconMenu = (route: RouteStackProps) => {
+const getIconMenu = (route: RouteType) => {
   const routeName = route.name
   // ? will return name of icon based from Material Community Icon
-  if (routeName === "demo") {
-    return "package"
+  if (routeName === "Home") {
+    return "home"
+  } else if (routeName === "Order") {
+    return "book-open"
   }
   return "google"
 }
 
-export const getRoute = (route: RouteStackProps): GetRouteType => {
+export const getRoute = (route: RouteType): GetRouteType => {
   const routeName = route.name
-  const secondaryRoute = [] as AppStackList[]
-  const noHeader = [] as AppStackList[]
+  const secondaryRoute = [] as ScreenList[]
+  const noHeader = ["Main"] as ScreenList[]
 
   const icon = getIconMenu(route)
   const name = getRouteName(route)
@@ -56,7 +58,7 @@ export const getRoute = (route: RouteStackProps): GetRouteType => {
   return { hasHeader, barColor, barStyle, tintColor, icon, name, titleColor }
 }
 
-export const getNavScreenOpt = (route: RouteStackProps) => {
+export const getNavScreenOpt = (route: RouteType) => {
   const getRouteOpt = getRoute(route)
   return {
     headerTintColor: getRouteOpt.tintColor,

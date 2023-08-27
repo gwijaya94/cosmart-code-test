@@ -4,11 +4,11 @@ import React, { useEffect, useLayoutEffect } from "react"
 import { ActivityIndicator, FlatList, Pressable, ScrollView, StyleSheet, View } from "react-native"
 import { Button, Icon, Image, ImageStyle, Input, Screen, Text } from "~/components"
 import { BookSnapshotIn, useStores } from "~/models"
-import { ScreenStackProps } from "~/navigators"
+import { ScreenTabProps } from "~/navigators"
 import { ColorItem, colors, getColor, mStyles, spacing, typography } from "~/theme"
 import { getRoute } from "~/utils/navigatorHelper"
 
-export const HomeScreen: ScreenStackProps<"Home"> = observer(function HomeScreen(props) {
+export const HomeScreen: ScreenTabProps<"Home"> = observer(function HomeScreen(props) {
   const { navigation, route } = props
   const { bookStore, summaryStore } = useStores()
 

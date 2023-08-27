@@ -1,7 +1,9 @@
-import { RouteProp } from "@react-navigation/native"
+import { BottomTabScreenProps } from "@react-navigation/bottom-tabs"
+import { CompositeScreenProps, RouteProp } from "@react-navigation/native"
 import { NativeStackScreenProps } from "@react-navigation/native-stack"
 import { FC } from "react"
 import { AppStackNavigatorParamList } from "./AppStackNavigator"
+import { BottomTabNavigatorParamList } from "./BottomTabNavigator"
 
 /**
  * This type allows TypeScript to know what routes are defined in this navigator
@@ -24,11 +26,13 @@ type AppStackScreenProps<T extends AppStackList> = NativeStackScreenProps<AppSta
 export type ScreenStackProps<T extends AppStackList> = FC<AppStackScreenProps<T>>
 export type RouteStackProps = RouteProp<AppStackParamList, AppStackList>
 
-// export type BottomTabParamList = BottomTabNavigatorParamList
-// export type BottomTabList = keyof BottomTabParamList
+// BOTTOM TAB TYPE
+export type BottomTabParamList = BottomTabNavigatorParamList
+export type BottomTabList = keyof BottomTabParamList
 
-// export type ScreenTabProps<T extends BottomTabList> = FC<TabProps<T>>
-// type TabProps<T extends BottomTabList> = CompositeNavigationProp<
-//   BottomTabNavigationProp<BottomTabParamList, T>,
-//   StackNavigationProp<AppStackParamList>
-// >
+export type ScreenTabProps<T extends BottomTabList> = FC<TabProps<T>>
+export type RouteTabProps = RouteProp<BottomTabParamList, BottomTabList>
+type TabProps<T extends BottomTabList> = CompositeScreenProps<
+  BottomTabScreenProps<BottomTabParamList, T>,
+  NativeStackScreenProps<AppStackParamList>
+>

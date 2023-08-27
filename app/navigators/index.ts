@@ -4,3 +4,4 @@ export * from "./navigator.type"
 // export * from "./navigator-helper"
 // export other navigators from here
 export * from "./AppStackNavigator"
+export * from "./BottomTabNavigator"

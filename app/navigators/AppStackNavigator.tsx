@@ -1,7 +1,9 @@
+import { NavigatorScreenParams } from "@react-navigation/native"
 import { createNativeStackNavigator } from "@react-navigation/native-stack"
 import React from "react"
 import * as Screens from "~/screens"
 import { getNavScreenOpt } from "~/utils/navigatorHelper"
+import { BottomTabNavigator, BottomTabNavigatorParamList } from "./BottomTabNavigator"
 import { AppStackParamList } from "./navigator.type"
 
 type ListScreenType = {
@@ -10,11 +12,7 @@ type ListScreenType = {
 }
 
 export type AppStackNavigatorParamList = {
-  demo: undefined
-  example: undefined
-  exampleApi: undefined
-  Home: undefined
-  Order: undefined
+  Main: NavigatorScreenParams<BottomTabNavigatorParamList>
   Summary: undefined
   // 🔥 Your stack screens go here
 }
@@ -22,8 +20,7 @@ export type AppStackNavigatorParamList = {
 const Stack = createNativeStackNavigator<AppStackParamList>()
 export const AppStackNavigator = () => {
   const listAppScreen: ListScreenType[] = [
-    { name: "Home", component: Screens.HomeScreen },
-    { name: "Order", component: Screens.OrderScreen },
+    { name: "Main", component: BottomTabNavigator },
     { name: "Summary", component: Screens.SummaryScreen },
     // 🔥 Your stack data go here
   ]

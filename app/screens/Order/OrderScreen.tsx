@@ -4,11 +4,11 @@ import React, { useEffect } from "react"
 import { FlatList, StyleSheet } from "react-native"
 import { OrderItem, Screen } from "~/components"
 import { useStores } from "~/models"
-import { ScreenStackProps } from "~/navigators"
+import { ScreenTabProps } from "~/navigators"
 import { mStyles } from "~/theme"
 import { getRoute } from "~/utils/navigatorHelper"
 
-export const OrderScreen: ScreenStackProps<"Order"> = observer(function OrderScreen(props) {
+export const OrderScreen: ScreenTabProps<"Order"> = observer(function OrderScreen(props) {
   const { navigation, route } = props
   const { orderStore } = useStores()
 
