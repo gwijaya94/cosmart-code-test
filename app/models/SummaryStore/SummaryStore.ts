@@ -1,4 +1,6 @@
-import { Instance, SnapshotIn, SnapshotOut, types } from "mobx-state-tree"
+import { toJS } from "mobx"
+import { Instance, SnapshotIn, SnapshotOut, applySnapshot, types } from "mobx-state-tree"
+import { BookModel, BookSnapshotIn } from "../Book/Book"
 import { withSetPropAction } from "../helpers/withSetPropAction"
 
 /**
@@ -6,10 +8,33 @@ import { withSetPropAction } from "../helpers/withSetPropAction"
  */
 export const SummaryStoreModel = types
   .model("SummaryStore")
-  .props({})
+  .props({
+    bookList: types.array(BookModel),
+    borrowDate: types.optional(types.string, ""),
+  })
   .actions(withSetPropAction)
-  .views((self) => ({})) // eslint-disable-line @typescript-eslint/no-unused-vars
-  .actions((self) => ({})) // eslint-disable-line @typescript-eslint/no-unused-vars
+  .views((self) => ({
+    get getBorrowedBookList() {
+      return toJS(self.bookList).map((item) => item.key)
+    },
+  }))
+  .actions((self) => ({
+    handleState(obj: SummaryStoreSnapshotIn) {
+      applySnapshot(self, { ...self, ...obj })
+    },
+    handleOnAddBook(item: BookSnapshotIn) {
+      const borrowed = self.getBorrowedBookList
+      const borrowedIndex = borrowed.findIndex((title) => title === item.key)
+      const tempArr = self.bookList.slice()
+      if (borrowedIndex < 0) {
+        this.handleState({ bookList: [...tempArr, item] })
+      } else {
+        tempArr.splice(borrowedIndex, 1)
+        console.tron.log(tempArr)
+        this.handleState({ bookList: tempArr })
+      }
+    },
+  }))
 
 export interface SummaryStore extends Instance<typeof SummaryStoreModel> {}
 export interface SummaryStoreSnapshotOut extends SnapshotOut<typeof SummaryStoreModel> {}
