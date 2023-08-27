@@ -53,6 +53,7 @@ const en = {
     edit: "Edit",
     cancel: "Cancel",
     delete: "Delete",
+    emptyBook: "No Book to be Borrowed",
   },
   orderScreen: {
     emptyOrder: "No Order Found",

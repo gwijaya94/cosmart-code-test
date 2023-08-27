@@ -22,6 +22,7 @@ export const SummaryScreen: ScreenStackProps<"Summary"> = observer(function Summ
   const canSubmit = summaryStore.canSubmitBooking
   const isLoadSummary = summaryStore.isLoading
   const isEdit = summaryStore.isEditing
+  const hasBorrowedBook = borrowedBook.length > 0
 
   useEffect(() => {
     return () => summaryStore.setProp("isLoading", false)
@@ -41,7 +42,7 @@ export const SummaryScreen: ScreenStackProps<"Summary"> = observer(function Summ
 
   const onSubmitBooking = async () => {
     await summaryStore.handleSubmitBooking()
-    navigation.replace("Order")
+    navigation.replace("Main", { screen: "Order" })
   }
 
   return (
@@ -51,7 +52,7 @@ export const SummaryScreen: ScreenStackProps<"Summary"> = observer(function Summ
           <>
             <DateTimePicker
               value={borrowedDate}
-              disabled={borrowedBook.length === 0}
+              disabled={!hasBorrowedBook}
               onSelected={onSelectDate}
               maximumDate={maxDate}
               minuteInterval={15}
@@ -63,11 +64,13 @@ export const SummaryScreen: ScreenStackProps<"Summary"> = observer(function Summ
                 variant="primaryBold"
                 style={styles.borrowedBook}
               />
-              <Text
-                tx={!isEdit ? "summaryScreen.edit" : "summaryScreen.cancel"}
-                style={[getColor(isEdit ? "error" : "secondary").textColor, styles.editText]}
-                onPress={onSwitchEdit}
-              />
+              {hasBorrowedBook && (
+                <Text
+                  tx={!isEdit ? "summaryScreen.edit" : "summaryScreen.cancel"}
+                  style={[getColor(isEdit ? "error" : "secondary").textColor, styles.editText]}
+                  onPress={onSwitchEdit}
+                />
+              )}
             </View>
           </>
         }
@@ -75,6 +78,11 @@ export const SummaryScreen: ScreenStackProps<"Summary"> = observer(function Summ
         style={mStyles.flex}
         keyExtractor={(item, index) => item.key + index}
         contentContainerStyle={{ paddingHorizontal: spacing.md, paddingVertical: spacing.md }}
+        ListEmptyComponent={
+          <View style={mStyles.centerScreen}>
+            <Text tx="summaryScreen.emptyBook" />
+          </View>
+        }
         renderItem={({ item }) => {
           const bookTitle = item.title
           const bookCover = item.cover_image
