@@ -43,6 +43,7 @@ const en = {
   summaryScreen: {
     borrowedBooks: "Borrowed book(s):",
     submit: "Submit",
+    pickupDate: "Pickup Date",
   },
 }
 

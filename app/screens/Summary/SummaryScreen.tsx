@@ -2,10 +2,11 @@
 import { observer } from "mobx-react-lite"
 import React from "react"
 import { FlatList, StyleSheet, View } from "react-native"
-import { Button, Image, ImageStyle, Screen, Text } from "~/components"
+import { Button, DateTimePicker, Image, ImageStyle, Screen, Text } from "~/components"
 import { useStores } from "~/models"
 import { ScreenStackProps } from "~/navigators"
 import { getColor, mStyles, spacing, typography } from "~/theme"
+import { getDayJs } from "~/utils/formatDate"
 import { getRoute } from "~/utils/navigatorHelper"
 
 export const SummaryScreen: ScreenStackProps<"Summary"> = observer(function SummaryScreen(props) {
@@ -14,13 +15,28 @@ export const SummaryScreen: ScreenStackProps<"Summary"> = observer(function Summ
 
   const routeOpt = getRoute(route)
   const borrowedBook = summaryStore.getSummaryBorrowedBook
+  const borrowedDate = summaryStore.borrowDate
+    ? getDayJs(summaryStore.borrowDate).toDate()
+    : undefined
+  const maxDate = getDayJs().add(7, "day").toDate()
   const canSubmit = summaryStore.canSubmitBooking
+
+  const onSelectDate = (date: string) => {
+    summaryStore.setProp("borrowDate", date)
+  }
 
   return (
     <Screen style={styles.root} routeOpt={routeOpt} preset="fixed">
       <FlatList
         ListHeaderComponent={
           <>
+            <DateTimePicker
+              value={borrowedDate}
+              onSelected={onSelectDate}
+              maximumDate={maxDate}
+              minuteInterval={15}
+              labelTx="summaryScreen.pickupDate"
+            />
             <Text
               tx="summaryScreen.borrowedBooks"
               variant="primaryBold"
