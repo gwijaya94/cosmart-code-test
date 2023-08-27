@@ -2,23 +2,30 @@ import { IconNode, Input as RNEInput, InputProps as RNEInputProps } from "@rneui
 import { observer } from "mobx-react-lite"
 import * as React from "react"
 import { TextStyle, View, ViewStyle } from "react-native"
-import { colors, getColor, mStyles, typography } from "~/theme"
+import { translate } from "~/i18n"
+import { colors, getColor, mStyles, spacing, typography } from "~/theme"
 import { getTextStyles } from "~/utils/function"
 import { isIos } from "~/utils/variable"
 import { Icon } from "./Icon"
+import { Text, TextProps } from "./Text"
 
 export interface InputProps extends RNEInputProps {
   /**
    * An optional style override useful for padding & margin.
    */
   isPassword?: boolean
+  placeholderTx?: TextProps["tx"]
+  placeholderTxOpt?: TextProps["txOptions"]
+  labelTx?: TextProps["tx"]
+  labelTxOpt?: TextProps["txOptions"]
 }
 
 /**
  * Describe your component here
  */
 export const Input = observer(function Input(props: InputProps) {
-  const { ...rest } = props
+  const { labelStyle, label, ...rest } = props
+  const { placeholderTx, placeholderTxOpt, labelTx, labelTxOpt } = props
 
   const [showText, setShowText] = React.useState<boolean>(true)
   const [hasText, setHasText] = React.useState<boolean>(false)
@@ -26,6 +33,12 @@ export const Input = observer(function Input(props: InputProps) {
 
   const isMultiLine = props.multiline || props.numberOfLines > 1
 
+  const i18nLabelText = labelTx && translate(labelTx, labelTxOpt)
+  const labelText = i18nLabelText || label
+  const i18nPlaceholder = placeholderTx && translate(placeholderTx, placeholderTxOpt)
+  const placeholder = i18nPlaceholder || props.placeholder
+
+  const labelStyles = [styling.labelStyle, labelStyle]
   const wrapper = [styling.container, props.containerStyle]
   const inputStyle = [
     styling.inputTextStyle,
@@ -42,6 +55,7 @@ export const Input = observer(function Input(props: InputProps) {
 
   const clearText = () => {
     inputRef.current.clear()
+    props.onChangeText && props.onChangeText("")
     setHasText(false)
   }
   const handleShowPassword = () => setShowText((val) => !val)
@@ -65,7 +79,9 @@ export const Input = observer(function Input(props: InputProps) {
     } else if (props.isPassword) {
       iconProps = { name: showPasswordIcon, onPress: onPressed } as IconNode
     } else if (
-      ((!props.rightIcon && hasText) || props.defaultValue || props.value) &&
+      !props.rightIcon &&
+      hasText &&
+      (props.defaultValue || props.value) &&
       !props.disabled
     ) {
       iconProps = { name: "close-circle", onPress: clearText } as IconNode
@@ -75,11 +91,13 @@ export const Input = observer(function Input(props: InputProps) {
 
   return (
     <View style={wrapper}>
+      {!!labelText && <Text style={labelStyles}>{labelText}</Text>}
       <RNEInput
         selectionColor={colors.primary}
         {...rest}
         ref={inputRef}
         secureTextEntry={props.isPassword && showText}
+        placeholder={placeholder}
         placeholderTextColor={colors.line}
         inputStyle={getTextStyles([...inputStyle, props.inputStyle])}
         inputContainerStyle={[...inputContainer, props.inputContainerStyle]}
@@ -97,7 +115,7 @@ export const Input = observer(function Input(props: InputProps) {
 
 const styling = {
   container: {
-    marginBottom: 15,
+    marginBottom: spacing.md,
   } as ViewStyle,
 
   containerStyle: {
@@ -108,6 +126,7 @@ const styling = {
   } as ViewStyle,
 
   inputContainer: {
+    ...getColor("white").backgroundColor,
     ...getColor("line").borderColor,
     borderRadius: 5,
   } as ViewStyle,
@@ -117,7 +136,6 @@ const styling = {
     ...typography.content,
     fontSize: 14,
     paddingHorizontal: 15,
-    paddingBottom: 8,
   } as TextStyle,
 
   rightIconContainer: { paddingRight: 15, marginVertical: 0 } as ViewStyle,
@@ -138,4 +156,10 @@ const styling = {
   errInputStyle: {
     ...getColor("error").borderColor,
   } as ViewStyle,
+
+  labelStyle: {
+    ...typography.content,
+    ...getColor("textDim").textColor,
+    marginBottom: 5,
+  } as TextStyle,
 }
