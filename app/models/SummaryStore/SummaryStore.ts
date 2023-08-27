@@ -1,5 +1,6 @@
 import { toJS } from "mobx"
 import { Instance, SnapshotIn, SnapshotOut, applySnapshot, types } from "mobx-state-tree"
+import { getDayJs } from "~/utils/formatDate"
 import { BookModel, BookSnapshotIn } from "../Book/Book"
 import { getRootStore } from "../helpers/getRootStore"
 import { withSetPropAction } from "../helpers/withSetPropAction"
@@ -51,7 +52,14 @@ export const SummaryStoreModel = types
       }
     },
     handleSubmitBooking() {
+      const { appStore } = getRootStore(self)
+      const selectedDate = getDayJs(self.borrowDate).format("DD MMMM YYYY - HH:mm")
+
       self.setProp("isLoading", true)
+      appStore.handleState({
+        isSuccess: true,
+        message: `Success Submit!\nPlease pickup on ${selectedDate}`,
+      })
       self.setProp("isLoading", false)
     },
   }))

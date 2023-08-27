@@ -25,6 +25,10 @@ export const SummaryScreen: ScreenStackProps<"Summary"> = observer(function Summ
     summaryStore.setProp("borrowDate", date)
   }
 
+  const onSubmitBooking = () => {
+    summaryStore.handleSubmitBooking()
+  }
+
   return (
     <Screen style={styles.root} routeOpt={routeOpt} preset="fixed">
       <FlatList
@@ -80,6 +84,7 @@ export const SummaryScreen: ScreenStackProps<"Summary"> = observer(function Summ
         tx="summaryScreen.submit"
         containerStyle={{ marginHorizontal: spacing.md }}
         disabled={!canSubmit}
+        onPress={onSubmitBooking}
       />
     </Screen>
   )

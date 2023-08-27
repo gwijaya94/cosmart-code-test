@@ -28,7 +28,9 @@ export const ModalInfo = observer(function ModalInfo(props: ModalInfoProps) {
   const iconColor: ColorItem = appStore.isSuccess ? "secondary" : "error"
 
   const onCloseModal = () => {
-    appStore.handleState({ isError: false, message: "" })
+    if (appStore.isError) {
+      appStore.handleState({ isError: false, message: "" })
+    } else appStore.handleState({ isSuccess: false, message: "" })
   }
 
   return (
@@ -49,6 +51,7 @@ const styles = StyleSheet.create({
   text: {
     ...typography.content,
     ...typography.primaryBold,
-    marginBottom: spacing.sm,
+    ...typography.textCenter,
+    marginVertical: spacing.sm,
   },
 })
