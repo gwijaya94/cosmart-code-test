@@ -25,6 +25,12 @@ const en = {
     },
   },
 
+  component: {
+    modalError: {
+      closeButton: "Close",
+    },
+  },
+
   homeScreen: {
     searchPlaceholder: "Search {{search}}...",
     availSubject: "Subjects :",
