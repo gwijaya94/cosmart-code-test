@@ -1,12 +1,10 @@
 import { toJS } from "mobx"
 import { Instance, SnapshotIn, SnapshotOut, applySnapshot, types } from "mobx-state-tree"
-import { TouchableHighlightBase } from "react-native"
-import { load } from "~/utils/storage"
-import { BookStoreModel } from "../BookStore/BookStore"
+import { BookModel } from "../Book/Book"
 import { withSetPropAction } from "../helpers/withSetPropAction"
 
 const OrderModel = types.model({
-  books: types.array(BookStoreModel),
+  books: types.array(BookModel),
   pickupDate: types.maybeNull(types.string),
 })
 

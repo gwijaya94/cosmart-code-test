@@ -70,7 +70,7 @@ export const SummaryStoreModel = types
         message: `Success Submit!\nPlease pickup on ${selectedDate}`,
       })
       self.setProp("isLoading", false)
-      this.handleState({ bookList: [] })
+      this.handleState({ bookList: [], borrowDate: "" })
     },
   }))
 
