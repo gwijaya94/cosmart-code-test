@@ -15,10 +15,6 @@ import { API_CONFIG_LIST, DEFAULT_API_CONFIG } from "../../config"
 export class Api {
   apisauce: ApisauceInstance
 
-  /**
-   * In case have another baseUrl
-   */
-  apiCustom: ApisauceInstance
   config: API_CONFIG_LIST
 
   /**
@@ -28,14 +24,6 @@ export class Api {
     this.config = config
     this.apisauce = create({
       baseURL: this.config.url,
-      timeout: this.config.timeout,
-      headers: {
-        Accept: "application/json",
-      },
-    })
-    // setup another axios with different url
-    this.apiCustom = create({
-      baseURL: this.config.urlAlt,
       timeout: this.config.timeout,
       headers: {
         Accept: "application/json",
