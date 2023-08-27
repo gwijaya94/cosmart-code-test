@@ -1,4 +1,4 @@
-import { Instance, SnapshotIn, SnapshotOut, types } from "mobx-state-tree"
+import { Instance, SnapshotIn, SnapshotOut, applySnapshot, types } from "mobx-state-tree"
 import { GeneralApiProblem } from "~/services/api"
 import { withSetPropAction } from "../helpers/withSetPropAction"
 
@@ -7,10 +7,16 @@ import { withSetPropAction } from "../helpers/withSetPropAction"
  */
 export const AppStoreModel = types
   .model("AppStore")
-  .props({})
+  .props({
+    isError: types.optional(types.boolean, false),
+    errorMessage: types.optional(types.string, ""),
+  })
   .actions(withSetPropAction)
   .views((self) => ({})) // eslint-disable-line @typescript-eslint/no-unused-vars
-  .actions(() => ({
+  .actions((self) => ({
+    handleState(obj: AppStoreSnapshotIn) {
+      applySnapshot(self, { ...self, ...obj })
+    },
     handleApiError(response: GeneralApiProblem) {
       if (response.kind === "unauthorized") {
         console.log("Unauth")

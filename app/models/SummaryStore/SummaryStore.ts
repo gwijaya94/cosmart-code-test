@@ -1,6 +1,7 @@
 import { toJS } from "mobx"
 import { Instance, SnapshotIn, SnapshotOut, applySnapshot, types } from "mobx-state-tree"
 import { BookModel, BookSnapshotIn } from "../Book/Book"
+import { getRootStore } from "../helpers/getRootStore"
 import { withSetPropAction } from "../helpers/withSetPropAction"
 
 /**
@@ -23,7 +24,14 @@ export const SummaryStoreModel = types
       applySnapshot(self, { ...self, ...obj })
     },
     handleOnAddBook(item: BookSnapshotIn) {
+      const { appStore } = getRootStore(self)
       const borrowed = self.getBorrowedBookList
+
+      if (borrowed.length >= 5) {
+        appStore.handleState({ isError: true, errorMessage: "You can only borrow up to 5 books" })
+        return
+      }
+
       const borrowedIndex = borrowed.findIndex((title) => title === item.key)
       const tempArr = self.bookList.slice()
       if (borrowedIndex < 0) {
