@@ -26,7 +26,7 @@ const en = {
   },
 
   component: {
-    modalError: {
+    modalInfo: {
       closeButton: "Close",
     },
   },
