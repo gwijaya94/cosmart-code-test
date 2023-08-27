@@ -39,18 +39,22 @@ export const BookStoreModel = types
       this.handleState({ isLoading: true })
 
       const { appStore } = getRootStore(self)
-      if (props.isRefresh) {
+      if (!props?.isLoadMore) {
         this.handleState({ offset: 0 })
+      }
+      if (props?.isLoadMore && self.totalBooks <= self.bookList.length) {
+        this.handleState({ isLoading: false })
+        return
       }
 
       const { bookQuery, offset, subject } = self
-      const newQuery = bookQuery.concat(` subject:${subject}`)
+      const newQuery = bookQuery.trim().concat(` subject:${subject}`)
       const result = await apiBook.searchBook({ offset, bookQuery: newQuery })
       this.handleState({ isLoading: false })
 
       if (result.kind === "ok") {
         const { docs, numFound } = result.data
-        const bookData = props.isLoadMore ? [...self.bookList, ...docs] : docs
+        const bookData = props?.isLoadMore ? [...self.bookList, ...docs] : docs
 
         this.handleState({ totalBooks: numFound, bookList: bookData, offset: bookData.length })
       } else appStore.handleApiError(result)

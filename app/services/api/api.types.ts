@@ -1,4 +1,4 @@
-import { BookSnapshotIn } from "~/models"
+import { BookStoreSnapshotIn } from "~/models"
 import { GeneralApiProblem } from "./apiProblem"
 
 interface SearchBookType {
@@ -8,7 +8,7 @@ interface SearchBookType {
   num_found: number
   q: string
   offset: number
-  docs: BookSnapshotIn[]
+  docs: BookStoreSnapshotIn["bookList"]
 }
 
 // just a example type
